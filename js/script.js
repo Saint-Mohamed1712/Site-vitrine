@@ -1,26 +1,29 @@
-var form = document.getElementById("form-contact");
+const form = document.getElementById("form-contact");
 
-form.onsubmit = function(e) {
-  e.preventDefault();
+form.addEventListener("submit", function(e) {
+    e.preventDefault();
 
-  var nom = document.getElementById("nom").value;
-  var email = document.getElementById("email").value;
-  var msg = document.getElementById("message").value;
-  var res = document.getElementById("resultat");
+    const nom = document.getElementById("nom").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const msg = document.getElementById("message").value.trim();
+    const res = document.getElementById("resultat");
 
-  if (nom == "" || email == "" || msg == "") {
-    res.innerHTML = "Remplis tous les champs !";
-    res.style.color = "red";
-    return false;
-  }
+    if (nom === "" || email === "" || msg === "") {
+        res.textContent = "Remplis tous les champs !";
+        res.style.color = "red";
+        return;
+    }
 
-  if (email.indexOf("@") < 0) {
-    res.innerHTML = "Met un @ dans l'email";
-    res.style.color = "red";
-    return false;
-  }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  res.innerHTML = "Message envoye merci " + nom;
-  res.style.color = "green";
-  form.reset();
-};
+    if (!emailRegex.test(email)) {
+        res.textContent = "Email invalide";
+        res.style.color = "red";
+        return;
+    }
+
+    res.textContent = "Message envoyé, merci " + nom;
+    res.style.color = "green";
+
+    form.reset();
+});
